@@ -36,12 +36,17 @@ set visualbell              " replaces error noise with visual
 set cursorline              " highlights the cursor line
 set ttyfast                 " helps with copypasta
 set ruler                   " relative cursor position shown bottom right
-set relativenumber          " makes line number relative to current line
-set undofile                " undo history stored in seperate file
 set mouse=a                 " allows mouse control
 set nobackup
 set noswapfile
 set pastetoggle=<F2>
+
+if v:version >=703
+    set relativenumber          " makes line number relative to current line
+    set undofile                " undo history stored in seperate file
+else
+    set number
+endif
 
 " Can be used to remap leader key, default is \
 ""let mapleader = ","         
@@ -120,7 +125,6 @@ endfunction
 autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
 
-let NERDChristmasTree
 let NERDTreeShowHidden=1
 
 """"""""""""""""""""""""""""""""
