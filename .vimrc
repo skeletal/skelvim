@@ -1,14 +1,49 @@
 " Skeletal's Vimrc
 
 " Init
-filetype off
-call pathogen#runtime_append_all_bundles()
-filetype plugin indent on
 set nocompatible    " gets rid of vi compatibility
 set modelines=0     " prevents modelines security exploits
+if !isdirectory($HOME . '/.vim/bundle/vundle')
+    let choice = confirm("Would you like to install plugins?", "&yes\n&no")
+    if choice == 1
+        let cmd = "git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle"
+        silent exec '!'.cmd
+        if !v:shell_error
+            autocmd VimEnter * BundleInstall 
+        endif
+    else 
+        let nobundle = 1
+    endif
+endif
 
+if !exists("nobundle")
+    filetype off
+
+    set rtp+=~/.vim/bundle/vundle/
+    call vundle#rc() 
+
+    " let Vundle manage Vundle
+    Bundle 'gmarik/vundle'
+
+    " My Bundles here:
+    "
+    " original repos on github
+    Bundle 'scrooloose/nerdtree'
+    Bundle 'Lokaltog/vim-easymotion'
+    " Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
+
+    " vim-scripts repos
+    "" Bundle 'L9'
+    " Bundle 'FuzzyFinder'
+    Bundle 'taglist.vim'
+    " non github repos
+    Bundle 'git://git.wincent.com/command-t.git'
+    " ...
+
+    filetype plugin indent on     " required! 
+endif
 syntax enable
-colorscheme skeletal
+"colorscheme skeletal
 
 if &t_Co >= 256 || has("gui_running")
     colorscheme zenburn
@@ -52,7 +87,7 @@ endif
 ""let mapleader = ","         
 
 " Searching / Moving
-                    " insert \v before searches to bypass crazy vim regex 'handling'
+" insert \v before searches to bypass crazy vim regex 'handling'
 nnoremap / /\v
 vnoremap / /\v
 set ignorecase      " searches ignore case if all lowercase
@@ -61,9 +96,9 @@ set gdefault        " does s/foo/bar/g by default
 set incsearch       " shows search matches as you type
 set showmatch
 set hlsearch        " these three highligh searches
-                    " remaps ',<space>' to clear highlighting
+" remaps ',<space>' to clear highlighting
 nnoremap <leader><space> :noh<cr>
-                    " remaps tab to match brackets
+" remaps tab to match brackets
 nnoremap <tab> %
 
 
@@ -122,6 +157,8 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Open NERDTree by default
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+if exists("loaded_nerd_tree")
 autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
 
@@ -131,33 +168,36 @@ let NERDTreeShowHidden=1
 " => Nerdtree autoquit function
 """"""""""""""""""""""""""""""""
 function! NERDTreeQuit()
-  redir => buffersoutput
-  silent buffers
-  redir END
-"                     1BufNo  2Mods.     3File           4LineNo
-  let pattern = '^\s*\(\d\+\)\(.....\) "\(.*\)"\s\+line \(\d\+\)$'
-  let windowfound = 0
+    redir => buffersoutput
+    silent buffers
+    redir END
+    "                     1BufNo  2Mods.     3File           4LineNo
+    let pattern = '^\s*\(\d\+\)\(.....\) "\(.*\)"\s\+line \(\d\+\)$'
+    let windowfound = 0
 
-  for bline in split(buffersoutput, "\n")
-    let m = matchlist(bline, pattern)
+    for bline in split(buffersoutput, "\n")
+        let m = matchlist(bline, pattern)
 
-    if (len(m) > 0)
-      if (m[2] =~ '..a..')
-        let windowfound = 1
-      endif
+        if (len(m) > 0)
+            if (m[2] =~ '..a..')
+                let windowfound = 1
+            endif
+        endif
+    endfor
+
+    if (!windowfound)
+        quitall
     endif
-  endfor
-
-  if (!windowfound)
-    quitall
-  endif
 endfunction
 autocmd WinEnter * call NERDTreeQuit()
 
+endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " TagList Shit
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if exists('loaded_taglist')
 let Tlist_GainFocus_On_ToggleOpen=1
+endif
 
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -171,6 +211,8 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Easy Motion
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if exists('g:EasyMotion_loaded')
 let g:EasyMotion_leader_key = '<Leader>]'
 hi EasyMotionShade  ctermbg=none ctermfg=blue
+endif
 
