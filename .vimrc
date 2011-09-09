@@ -36,6 +36,7 @@ if !exists("nobundle")
     "" Bundle 'L9'
     " Bundle 'FuzzyFinder'
     Bundle 'taglist.vim'
+    Bundle 'OmniCppComplete'
     " non github repos
     Bundle 'git://git.wincent.com/command-t.git'
     " ...
@@ -101,6 +102,9 @@ nnoremap <leader><space> :noh<cr>
 " remaps tab to match brackets
 nnoremap <tab> %
 
+" folding
+set foldmethod=syntax
+set foldnestmax=1
 
 
 set list            " shows invisible characters
@@ -112,6 +116,8 @@ nnoremap k gk
 inoremap jj <ESC>
 
 au FocusLost * :wa  " saves the file whenever focus is lost
+au BufWinLeave * mkview " saves folds when exiting
+au BufWinEnter * silent loadview " loads folds on opening
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Leader Key Bindings
@@ -125,7 +131,7 @@ inoremap <leader><tab> <c-n>
 " reselect text that was just pasted
 nnoremap <leader>v V`]
 " open new vertical split
-nnoremap <leader>w <C-w>v<C-w>l
+nnoremap <leader>s <C-w>v<C-w>l
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
@@ -158,7 +164,6 @@ endfunction
 " Open NERDTree by default
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-if exists("loaded_nerd_tree")
 autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
 
@@ -191,7 +196,6 @@ function! NERDTreeQuit()
 endfunction
 autocmd WinEnter * call NERDTreeQuit()
 
-endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " TagList Shit
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -215,4 +219,20 @@ if exists('g:EasyMotion_loaded')
 let g:EasyMotion_leader_key = '<Leader>]'
 hi EasyMotionShade  ctermbg=none ctermfg=blue
 endif
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" OmniCompletionOptions for c++ (.cpp)
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let OmniCpp_MayCompleteDot = 1 " autocomplete with .
+let OmniCpp_MayCompleteArrow = 1 " autocomplete with ->
+let OmniCpp_MayCompleteScope = 1 " autocomplete with ::
+let OmniCpp_SelectFirstItem = 2 " select first item (but don't insert)
+let OmniCpp_NamespaceSearch = 2 " search namespaces in this and included files
+let OmniCpp_ShowPrototypeInAbbr = 1 " show function prototype (i.e. parameters) in popup window
+" -- ctags --
+" map <ctrl>+F12 to generate ctags for current folder:
+map <C-F12> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR><CR>
+" add current directory's generated tags file to available tags
+set tags+=./tags
+set tags+=~/.vim/tags/cpp
 

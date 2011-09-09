@@ -59,6 +59,12 @@ export LESS_TERMCAP_ue=$'\E[0m'
 # MacPorts Installer addition on 2011-03-14_at_20:07:45: adding an appropriate PATH variable for use with MacPorts.
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
+JOGL=~/Library/jogl-1.1.1-macosx-universal/lib/
+export CLASSPATH=${CLASSPATH}:~/code/compilers3131:~/code/jasmin/classes:$JOGL/jogl.jar:$JOGL/gluegen-rt.jar
+export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$JOGL
 
-export CLASSPATH=${CLASSPATH}:~/code/compilers3131:~/code/jasmin/classes
 
+# Setting PATH for Python 3.2
+# The orginal version is saved in .bash_profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/3.2/bin:${PATH}"
+export PATH
