@@ -1,6 +1,6 @@
-alias sshmed="ssh medwin_medwinsite@ssh.phx.nearlyfreespeech.net" # pass: happy_foetus
+alias code="cd Dropbox/Coding"
 
-alias blah="echo hello world"
+
 export CLICOLOR=1;
 export TERM="xterm-color"
 export PS1="\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] "
@@ -9,7 +9,6 @@ export VISUAL='vim'
 alias cp='cp -i'
 alias ls='ls -G'
 alias mv='mv -i'
-alias crawl='/Users/skeletal/Games/crawl/crawl-ref/source/crawl'
 set -o vi
 export GREP_COLOR="1;33"
 alias grep="grep --color=auto"
@@ -50,21 +49,8 @@ export LESS_TERMCAP_ue=$'\E[0m'
 }
 
 
-
-
-##
-# Your previous /Users/skeletal/.bash_profile file was backed up as /Users/skeletal/.bash_profile.macports-saved_2011-03-14_at_20:07:45
-##
-
-# MacPorts Installer addition on 2011-03-14_at_20:07:45: adding an appropriate PATH variable for use with MacPorts.
-export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-# Finished adapting your PATH environment variable for use with MacPorts.
-JOGL=~/Library/jogl-1.1.1-macosx-universal/lib/
-export CLASSPATH=${CLASSPATH}:~/code/compilers3131:~/code/jasmin/classes:$JOGL/jogl.jar:$JOGL/gluegen-rt.jar
-export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:$JOGL
-
-
-# Setting PATH for Python 3.2
-# The orginal version is saved in .bash_profile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.2/bin:${PATH}"
-export PATH
+#Better colours for gruvbox colorscheme
+if [ -f "$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh" ]
+then
+    source "$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"
+fi
