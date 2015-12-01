@@ -1,4 +1,4 @@
-alias code="cd Dropbox/Coding"
+alias code="cd ~/Dropbox/Coding"
 
 
 export CLICOLOR=1;
