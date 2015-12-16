@@ -37,6 +37,12 @@ if !exists("nobundle")
     " cd ~/.vim/bundle/YouCompleteMe && ./install.sh
     Plugin 'Valloric/YouCompleteMe'             
 
+    " Shows git diff info in the gutter
+    Plugin 'airblade/vim-gitgutter'
+
+    " Syntax checking plugin, needs a checker like JSHint
+    Plugin 'scrooloose/syntastic'
+
     " Javascript for YouCompleteMe
     " cd ~/.vim/bundle/tern_for_vim && npm install
     Plugin 'marijnh/tern_for_vim'               
@@ -44,18 +50,15 @@ if !exists("nobundle")
     " JSON syntax highlighter
     Plugin 'helino/vim-json'
 
-    " Shows git diff info in the gutter
-    Plugin 'airblade/vim-gitgutter'
-
     " For indenting and highlighting
     Plugin 'pangloss/vim-javascript'
-
-    " Syntax checking plugin, needs a checker like JSHint
-    Plugin 'scrooloose/syntastic'
 
     " Javascript Syntax checker
     " sudo npm install -g jshint
     Plugin 'walm/jshint.vim'
+
+    " PEP8 checker for Python
+    Plugin 'nvie/vim-flake8'
 
     " tpope time
     Plugin 'tpope/vim-sensible'
@@ -67,9 +70,13 @@ if !exists("nobundle")
     filetype plugin indent on     " required! 
 endif
 
+" Proper highlighting for python
+autocmd BufRead,BufNewFile *.py let python_highlight_all=1
+
 set t_Co=256
 set background=dark
 colorscheme gruvbox
+syntax on
 
 set expandtab       " inserts shiftwidth spaces when a tab is pressed
 set shiftwidth=4    " how many spaces to a tab
@@ -88,8 +95,14 @@ set nobackup
 set noswapfile
 set pastetoggle=<F2>
 
+" Auto saves files
+:au FocusLost * silent! wa
+:set autowrite
+
 if v:version >=703
     set relativenumber          " makes line number relative to current line
+    set number                  " current line shows absolute
+
     set undofile                " undo history stored in seperate file
 else
     set number
