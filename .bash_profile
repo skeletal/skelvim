@@ -1,9 +1,35 @@
 alias code="cd ~/Dropbox/Coding"
+alias crazy="python3 ~/Dropbox/Coding/crazyflie-clients-python/bin/cfclient"
 
 
 export CLICOLOR=1;
 export TERM="xterm-color"
-export PS1="\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] "
+export PROMPT_COMMAND=__prompt_command  # Func to gen PS1 after CMDs
+
+function __prompt_command() {
+    local EXIT="$?"             # This needs to be first
+
+    local RCol='\[\e[0m\]'      # Terminal Default
+
+    local Red='\[\e[0;31m\]'
+    local Gre='\[\e[0;32m\]'
+    local BYel='\[\e[1;33m\]'
+    local BBlu='\[\e[1;34m\]'
+    local Pur='\[\e[0;35m\]'
+
+    PS1=""
+
+    if [ $EXIT != 0 ]; then
+        PS1+="${Red}[\!]"      # Add red if exit code non 0
+    else
+        PS1+="${Gre}[\!]"      # Green on success
+    fi
+
+    PS1+="${Gre}[\u@\h]"       # username@hostname
+    PS1+="${BBlu}[$PWD]"       # full path
+    PS1+="${RCol}\n[\t] $> "    # time and prompt on newline
+}
+
 
 export VISUAL='vim'
 alias cp='cp -i'

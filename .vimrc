@@ -1,3 +1,5 @@
+"" Requirements
+" brew install ag
 set nocompatible    " gets rid of vi compatibility
 
 if !isdirectory($HOME . '/.vim/bundle/vundle')
@@ -22,11 +24,13 @@ if !exists("nobundle")
     " let Vundle manage Vundle
     Plugin 'gmarik/vundle'
 
-    " original repos on github
+    " Colorscheme
     Plugin 'morhetz/gruvbox'
+
+    " Better movement
     Plugin 'easymotion/vim-easymotion'
 
-    "Swap argument order with >,
+    " Swap argument order with >,
     Plugin 'PeterRincker/vim-argumentative'     
 
     " Auto closes brackets etc
@@ -64,6 +68,15 @@ if !exists("nobundle")
     Plugin 'tpope/vim-sensible'
     Plugin 'tpope/vim-surround'
 
+    " shows indent lines
+    Bundle 'Yggdroot/indentLine'
+
+    " handlebars support
+    Plugin 'mustache/vim-mustache-handlebars'
+
+    " The silver searcher - ag
+    Plugin 'rking/ag.vim'
+
 
 
 
@@ -97,7 +110,7 @@ set pastetoggle=<F2>
 
 " Auto saves files
 :au FocusLost * silent! wa
-:set autowrite
+:set autowriteall
 
 if v:version >=703
     set relativenumber          " makes line number relative to current line
@@ -124,6 +137,7 @@ nnoremap <leader><space> :noh<cr>
 
 set list            " shows invisible characters
 set listchars=tab:▸\ ,eol:¬,trail:-,extends:>,precedes:<,nbsp:+
+let g:indentLine_char = '⎸'
 
 
 " smart line moving
@@ -145,39 +159,20 @@ inoremap <leader><tab> <c-n>
 nnoremap <leader>v V`]
 " open new vertical split
 nnoremap <leader>s <C-w>v<C-w>l
-noremap <C-h> <C-w>h
-noremap <C-j> <C-w>j
-noremap <C-k> <C-w>k
-noremap <C-l> <C-w>l
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" EasyMotion
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" If these don't work it may be an issue with terminals keybindings
+nnoremap <C-h> <C-W>h
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+nnoremap <C-l> <C-W>l
 
-let g:EasyMotion_do_mapping = 0 " Disable default mappings
+nnoremap <leader>r :redraw!<CR>
 
-" Bi-directional find motion
-" Jump to anywhere you want with minimal keystrokes, with just one key binding.
-" `f{char}{label}`
-nmap f <Plug>(easymotion-s)
-" or
-" `f{char}{char}{label}`
-" Need one more keystroke, but on average, it may be more comfortable.
-nmap <Leader>f <Plug>(easymotion-s2)
-
-" Turn on case insensitive feature
-let g:EasyMotion_smartcase = 1
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Syntastic
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-
+" Requires Ag setup to not be terrible
+" TODO handle FIXME etc
+" TODO add options for searching other than the path, i.e. open buffers
+nnoremap <leader>t :silent lgrep! TODO<CR>:lw<CR>:redraw!<CR>
+nnoremap <leader>l :silent lgrep! <cword><CR>*<CR>:lw<CR>:redraw!<CR>
 """"""""""""""""""""""""""""""
 " => Statusline
 """"""""""""""""""""""""""""""
@@ -202,3 +197,46 @@ function! HasPaste()
         return ''
     endif
 endfunction
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" EasyMotion
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+
+" Bi-directional find motion
+" Jump to anywhere you want with minimal keystrokes, with just one key binding.
+" `f{char}{label}`
+nmap f <Plug>(easymotion-s)
+" or
+" `f{char}{char}{label}`
+" Need one more keystroke, but on average, it may be more comfortable.
+nmap <Leader>f <Plug>(easymotion-s2)
+
+" Turn on case insensitive feature
+let g:EasyMotion_smartcase = 1
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Handlebars
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:mustache_abbreviations = 1
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Syntastic
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Ag
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ag_working_path_mode="r"
+set grepprg=ag\ --vimgrep\ $* 
+set grepformat=%f:%l:%c:%m
+
+
